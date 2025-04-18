@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
 import Products from "./Components/Products";
 import HeroSection from "./Components/HeroSection";
@@ -6,15 +6,16 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Deals from "./Components/Deals";
 import DealDetail from "./Components/Detail";
 const App = () => {
+  const [filteredData, setFilteredData] = useState([]);
   return (
     <BrowserRouter>
-        <Navbar/>
+  <Navbar setFilteredData={setFilteredData}/>
       <Routes>
         <Route
           element={
             <>
               <HeroSection />
-              <Products />
+              <Products filteredData={filteredData} setFilteredData={setFilteredData}/>
             </>
           }
           path="/"

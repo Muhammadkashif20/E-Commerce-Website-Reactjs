@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Typography, Row, Col, Spin } from "antd";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2"; 
 
 const { Title, Paragraph } = Typography;
 
-const Products = () => {
+const Products = ({ filteredData,setFilteredData }) => {
   const [products, setProducts] = useState([]);
-  const [search , setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -35,10 +34,23 @@ const Products = () => {
       text: "Your product has been added to the cart successfully.",
     });
   };
-
+  const filterData=JSON.parse(localStorage.getItem("filteredData"))
+  console.log("filterData=>", filterData);
   return (
     <div className="min-h-screen bg-gray-50 p-10">
       <Title level={2} className="text-center mb-8">Our Featured Products</Title>
+      {filterData && (
+  <div className="text-center mb-6">
+    <Button 
+      onClick={() => {
+        localStorage.removeItem("filteredData");
+        setFilteredData(null); 
+      }}
+    >
+      Show All Products
+    </Button>
+  </div>
+)}
 
       {loading ? (
         <div className="flex justify-center items-center h-80">
@@ -46,7 +58,7 @@ const Products = () => {
         </div>
       ) : (
         <Row gutter={[24, 24]} justify="center">
-          {products.map((product) => (
+          {(filterData  ?   filterData : products).map((product) => (
             <Col
               key={product.id}
               xs={24}

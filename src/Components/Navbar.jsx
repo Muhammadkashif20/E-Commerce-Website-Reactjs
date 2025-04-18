@@ -9,17 +9,34 @@ import {
 import { useState } from "react";
 const { Search } = Input;
 
-const Navbar = () => {
+const Navbar = ({setFilteredData}) => {
   const [searchValue, setSearchValue] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+const fetchData=JSON.parse(localStorage.getItem("products"))
+console.log("dataFetchNavbar=>", fetchData);
+const category=fetchData.map((item)=>item.category)
+const uniqueCategory=[...new Set(category)]
+console.log("categories=>", category);
+const handleCategory=(category)=>{
+  console.log("Clicked category =>", category);
+  const filtered=fetchData.filter((item)=>item.category===category)
+  console.log("filteredData=>", filtered);
+  setFilteredData(filtered)
+    localStorage.setItem("filteredData", JSON.stringify(filtered))
+}
+const categories = (
+  <Menu
+  items={uniqueCategory.map((category, index) => ({
+    key: index,
+    label: (
+      <span onClick={() => handleCategory(category)}>
+        {category}
+      </span>
+    ),
+  }))}
+/>
 
-  const categories = (
-    <Menu>
-      <Menu.Item>Men</Menu.Item>
-      <Menu.Item>Women</Menu.Item>
-      <Menu.Item>Kids</Menu.Item>
-    </Menu>
-  );
+  )
   const handleSeacrhFilter = (e) => {
     const value = e.target.value.toLowerCase();
     console.log("value=>", value);
@@ -34,7 +51,7 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-8 items-center">
-        <Dropdown overlay={categories} placement="bottom">
+        <Dropdown  overlay={categories} placement="bottom">
           <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">
             Categories
           </a>
