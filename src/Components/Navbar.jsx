@@ -2,27 +2,28 @@ import React from "react";
 import { Menu, Dropdown, Input, Badge } from "antd";
 import {
   ShoppingCartOutlined,
-  HeartOutlined,
   UserOutlined,
   MenuOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 const { Search } = Input;
 
 const Navbar = ({setFilteredData}) => {
+  const navigate=useNavigate()  
   const [searchValue, setSearchValue] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-const fetchData=JSON.parse(localStorage.getItem("products"))
-console.log("dataFetchNavbar=>", fetchData);
-const category=fetchData.map((item)=>item.category)
-const uniqueCategory=[...new Set(category)]
-console.log("categories=>", category);
-const handleCategory=(category)=>{
-  console.log("Clicked category =>", category);
-  const filtered=fetchData.filter((item)=>item.category===category)
+  const fetchData=JSON.parse(localStorage.getItem("products"))
+  console.log("dataFetchNavbar=>", fetchData);
+  const category=fetchData.map((item)=>item.category)
+  const uniqueCategory=[...new Set(category)]
+  console.log("categories=>", category);
+  const handleCategory=(category)=>{
+    console.log("Clicked category =>", category);
+    const filtered=fetchData.filter((item)=>item.category===category)
   console.log("filteredData=>", filtered);
   setFilteredData(filtered)
-    localStorage.setItem("filteredData", JSON.stringify(filtered))
+  localStorage.setItem("filteredData", JSON.stringify(filtered))
 }
 const categories = (
   <Menu
@@ -51,20 +52,21 @@ const categories = (
 
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-8 items-center">
-        <Dropdown  overlay={categories} placement="bottom">
-          <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">
+      <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">
+          Home
+        </Link>
+        <Dropdown  overlay={categories} placement="bottom" className="text-gray-700 hover:text-blue-600 font-medium cursor-pointer">
             Categories
-          </a>
         </Dropdown>
-        <a href="/deals" className="text-gray-700 hover:text-blue-600 font-medium">
+        <Link to="/deals" className="text-gray-700 hover:text-blue-600 font-medium">
           Deals
-        </a>
-        <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">
+        </Link>
+        <Link to="/contact" className="text-gray-700 hover:text-blue-600 font-medium">
           Contact
-        </a>
-        <a href="#" className="text-gray-700 hover:text-blue-600 font-medium">
+        </Link>
+        <Link to="/about" className="text-gray-700 hover:text-blue-600 font-medium">
           About
-        </a>
+        </Link>
       </div>
 
       {/* Search */}
@@ -78,14 +80,11 @@ const categories = (
       </div>
 
       {/* Icons */}
-      <div className="flex items-center gap-4">
-        <Badge count={2} size="small">
-          <HeartOutlined className="text-xl cursor-pointer hover:text-red-500" />
-        </Badge>
+      <div className="flex items-center gap-6">
         <Badge count={3} size="small">
           <ShoppingCartOutlined className="text-xl cursor-pointer hover:text-green-600" />
         </Badge>
-        <UserOutlined className="text-xl cursor-pointer hover:text-blue-600" />
+        <UserOutlined className="text-xl cursor-pointer hover:text-blue-600" onClick={() => navigate("/login")}/>
 
         {/* Hamburger for mobile */}
         <MenuOutlined
@@ -99,24 +98,24 @@ const categories = (
         <div className="absolute top-16 left-0 w-full bg-white border-t md:hidden z-50">
           <ul className="flex flex-col p-4 space-y-3">
             <li>
-              <a href="#" className="text-gray-700">
+              <Link to="#" className="text-gray-700">
                 Categories
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-gray-700">
+              <Link to="#" className="text-gray-700">
                 Deals
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-gray-700">
+              <Link to="#" className="text-gray-700">
                 Contact
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-gray-700">
+              <Link to="#" className="text-gray-700">
                 About
-              </a>
+              </Link>
             </li>
             <Search
               placeholder="Search products..."

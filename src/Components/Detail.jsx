@@ -32,6 +32,7 @@ const DealDetail = () => {
               <Button onClick={() => navigate("/deals")} className="border-gray-300 text-gray-700">
                 Back to Home
               </Button>
+              
             </div>
           </div>
         </div>
