@@ -25,6 +25,7 @@ const Navbar = ({setFilteredData}) => {
   setFilteredData(filtered)
   localStorage.setItem("filteredData", JSON.stringify(filtered))
 }
+const authData=localStorage.getItem("formData")
 const categories = (
   <Menu
   items={uniqueCategory.map((category, index) => ({

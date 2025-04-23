@@ -1,16 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import {createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase"
 const { Title, Text } = Typography;
-
 const Signup = () => {
+  const navigate=useNavigate()
+  const [fullname, setFullname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  console.log("fullname: ", fullname);
+  console.log("email: ", email);
+  console.log("password:", password);
   const handleSubmit = (values) => {
-    console.log("Form Values: ", values);
-    message.success("Account created successfully!");
+   console.log("Form Values: ", values);
+   createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    console.log("User signed up: ", user);  
+   message.success("Account created successfully!");
+      navigate("/login")
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    console.log("Error code: ", errorCode);
+    message.error("Error creating account. Please try again!");
+    const errorMessage = error.message;
+    console.log("Error code: ", errorMessage);    
+    message.error("Error creating account. Please try again!");
+  });
   };
-
+  
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-2xl transition-all duration-300">
@@ -33,6 +55,8 @@ const Signup = () => {
             <Input
               size="large"
               placeholder="Enter your full name"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
               prefix={<UserOutlined className="text-gray-400" />}
               className="rounded-lg"
             />
@@ -51,6 +75,8 @@ const Signup = () => {
               size="large"
               placeholder="Enter your email address"
               prefix={<MailOutlined className="text-gray-400" />}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="rounded-lg"
             />
           </Form.Item>
@@ -68,6 +94,8 @@ const Signup = () => {
               size="large"
               placeholder="Enter your password"
               prefix={<LockOutlined className="text-gray-400" />}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="rounded-lg"
             />
           </Form.Item>

@@ -14,7 +14,7 @@ const Footer = () => {
             <Title level={4} className="text-black">Quick Links</Title>
             <Space direction="vertical" className="text-gray-700">
               <a href="/" className="hover:text-blue-600">Home</a>
-              <a href="/shop" className="hover:text-blue-600">Shop</a>
+              <a href="/" className="hover:text-blue-600">Products</a>
               <a href="/about" className="hover:text-blue-600">About Us</a>
               <a href="/contact" className="hover:text-blue-600">Contact</a>
             </Space>
@@ -61,7 +61,7 @@ const Footer = () => {
         </Row>
 
         {/* Copyright */}
-        <div className="text-center text-gray-700 mt-8">
+        <div className="text-center text-gray-700 mt-8 font-medium">
           <p>&copy; 2025 MK Shopping Store. All Rights Reserved.</p>
         </div>
       </div>

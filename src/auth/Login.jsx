@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import {signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase"
 const { Title, Text } = Typography;
-
 const Login = () => {
-  const handleSubmit = (values) => {
-    console.log("Form Values: ", values);
-    message.success("Login successful!");
-  };
+    const navigate=useNavigate()
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    console.log("email: ", email);
+    console.log("password:", password);
 
+  const handleLoginSubmit = (values) => {
+    console.log("Form Values: ", values);
+    localStorage.setItem("formData",values)
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log("User signed in: ", user);
+    message.success("Login successful!");
+      navigate("/")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      console.log("Error code: ", errorCode);
+      const errorMessage = error.message;
+      console.log("Error message: ", errorMessage);
+    });
+  }
+  
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-2xl transition-all duration-300">
@@ -21,7 +41,7 @@ const Login = () => {
           Please enter your login details
         </Text>
         
-        <Form layout="vertical" onFinish={handleSubmit} className="space-y-4">
+        <Form layout="vertical" onFinish={handleLoginSubmit} className="space-y-4">
           {/* Email or Username */}
           <Form.Item
             label="Username or Email"
@@ -32,8 +52,11 @@ const Login = () => {
           >
             <Input
               size="large"
-              placeholder="Enter your username or email"
+              placeholder="Enter your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               prefix={<UserOutlined className="text-gray-400" />}
+
               className="rounded-lg"
             />
           </Form.Item>
@@ -48,7 +71,9 @@ const Login = () => {
           >
             <Input.Password
               size="large"
-              placeholder="Enter your password"
+              placeholder="Enter your Password"
+              value={password}
+              onChange={(e)=>{setPassword(e.target.value)}}
               prefix={<LockOutlined className="text-gray-400" />}
               className="rounded-lg"
             />

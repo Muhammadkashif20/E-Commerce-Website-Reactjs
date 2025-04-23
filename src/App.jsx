@@ -3,6 +3,7 @@ import Products from "./Components/Products";
 import HeroSection from "./Components/HeroSection";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Deals from "./Components/Deals";
+import Footer from "./Components/Footer";
 import DealDetail from "./Components/Detail";
 import Contact from "./Components/Contact";
 import About from "./Components/About";
@@ -25,6 +26,7 @@ const App = () => {
                 filteredData={filteredData}
                 setFilteredData={setFilteredData}
               />
+              <Footer/>
             </>
           }
           path="/" />
