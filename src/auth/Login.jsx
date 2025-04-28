@@ -9,19 +9,22 @@ const Login = () => {
     const navigate=useNavigate()
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    console.log("email: ", email);
-    console.log("password:", password);
 
   const handleLoginSubmit = (values) => {
-    console.log("Form Values: ", values);
-    localStorage.setItem("formData",values)
+    console.log("email: ", email);
+    console.log("password:", password);
+    console.log("Form Values for login: ", values);
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
       console.log("User signed in: ", user);
     message.success("Login successful!");
+    const loginData=localStorage.setItem("formData", JSON.stringify(values));
+      console.log("loginData=>", loginData);
+
       navigate("/")
+
     })
     .catch((error) => {
       const errorCode = error.code;

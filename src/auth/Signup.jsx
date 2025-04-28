@@ -10,11 +10,13 @@ const Signup = () => {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  console.log("fullname: ", fullname);
-  console.log("email: ", email);
-  console.log("password:", password);
   const handleSubmit = (values) => {
-   console.log("Form Values: ", values);
+    console.log("fullname: ", fullname);
+    console.log("email: ", email);
+    console.log("password:", password);
+   console.log("Form Values for register: ", values);
+    let storeData=localStorage.setItem("regFormData",JSON.stringify(values)) 
+    console.log("storeData=>", storeData);
    createUserWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     // Signed up 
