@@ -26,10 +26,10 @@ const DealDetail = () => {
             <Paragraph className="text-lg font-semibold text-blue-600 mb-6">Price: {deal.price}</Paragraph>
 
             <div className="flex gap-4">
-              <Button type="primary" className="bg-blue-600 hover:bg-blue-700 px-6 rounded-md">
+              <Button onClick={()=>navigate("/buynow")} type="primary" className="bg-blue-600 hover:bg-blue-700 px-6 rounded-md">
                 Buy Now
               </Button>
-              <Button onClick={() => navigate("/deals")} className="border-gray-300 text-gray-700">
+              <Button onClick={() => navigate("/")} className="border-gray-300 text-gray-700">
                 Back to Home
               </Button>
               

@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Typography, Row, Col, Spin } from "antd";
 import Swal from "sweetalert2"; 
+import { useNavigate } from "react-router-dom";
 
 const { Title, Paragraph } = Typography;
 
 const Products = ({ filteredData,setFilteredData }) => {
+  const navigate= useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -67,31 +69,47 @@ const Products = ({ filteredData,setFilteredData }) => {
               lg={6}
               className="flex justify-center"
             >
-              <Card
-                hoverable
-                className="w-full max-w-xs"
-                cover={
-                  <img
-                    alt={product.title}
-                    src={product.images[0]}
-                    className="h-56 object-cover"
-                  />
-                }
-              >
-                <Title level={5} ellipsis>{product.title}</Title>
-                <Paragraph ellipsis={{ rows: 2 }}>{product.description}</Paragraph>
-                <div className="flex justify-between items-center mt-3">
-                  <span className="text-lg font-semibold text-green-600">
-                    ${product.price}
-                  </span>
-                  <Button 
-                    type="primary" 
-                    onClick={handleAddToCart} 
-                  >
-                    Add to Cart
-                  </Button>
-                </div>
-              </Card>
+             <Card
+  hoverable
+  className="w-full max-w-xs flex flex-col justify-between"
+  cover={
+    <img
+      alt={product.title}
+      src={product.images[0]}
+      className="h-56 object-cover"
+    />
+  }
+>
+  <div>
+    <Title level={5} ellipsis>{product.title}</Title>
+    <Paragraph ellipsis={{ rows: 2 }}>{product.description}</Paragraph>
+  </div>
+
+  <div className="mt-4">
+    <div className="flex justify-between items-center mb-2">
+      <span className="text-lg font-semibold text-green-600">
+        ${product.price}
+      </span>
+    </div>
+
+    <div className="flex justify-between gap-2">
+      <Button 
+        type="primary" 
+        className="w-1/2" 
+        onClick={handleAddToCart}
+      >
+        Add to Cart
+      </Button>
+      <Button 
+        className="w-1/2" 
+        onClick={() => navigate(`/detail/${product.id}`)}
+      >
+        View Details
+      </Button>
+    </div>
+  </div>
+</Card>
+
             </Col>
           ))}
         </Row>

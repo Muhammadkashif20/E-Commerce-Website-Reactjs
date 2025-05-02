@@ -10,6 +10,7 @@ import About from "./Components/About";
 import Login from "./auth/Login";
 import LayoutWithNavbar from "./Components/Layout";
 import Signup from "./auth/Signup";
+import BuyNow from "./Components/BuyNow";
 const App = () => {
   const [filteredData, setFilteredData] = useState([]);
   return (
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/deals" element={<Deals />}/>
         <Route path="/contact" element={<Contact />}/>
         <Route path="/about" element={<About />}/>
+        <Route path="/buynow" element={<BuyNow />}/>
         <Route path="/detail/:id" element={<DealDetail />}/>
         </Route>
       </Routes>

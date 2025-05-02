@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import {createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase"
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
 const { Title, Text } = Typography;
 const Signup = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,27 +14,27 @@ const Signup = () => {
     console.log("fullname: ", fullname);
     console.log("email: ", email);
     console.log("password:", password);
-   console.log("Form Values for register: ", values);
-    let storeData=localStorage.setItem("regFormData",JSON.stringify(values)) 
+    console.log("Form Values for register: ", values);
+    let storeData = localStorage.setItem("regFormData", JSON.stringify(values));
     console.log("storeData=>", storeData);
-   createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed up 
-    const user = userCredential.user;
-    console.log("User signed up: ", user);  
-   message.success("Account created successfully!");
-      navigate("/login")
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    console.log("Error code: ", errorCode);
-    message.error("Error creating account. Please try again!");
-    const errorMessage = error.message;
-    console.log("Error code: ", errorMessage);    
-    message.error("Error creating account. Please try again!");
-  });
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        console.log("User signed up: ", user);
+        message.success("Account created successfully!");
+        navigate("/login");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        console.log("Error code: ", errorCode);
+        message.error("Error creating account. Please try again!");
+        const errorMessage = error.message;
+        console.log("Error code: ", errorMessage);
+        message.error("Error creating account. Please try again!");
+      });
   };
-  
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-2xl transition-all duration-300">
@@ -44,15 +44,13 @@ const Signup = () => {
         <Text className="block text-center text-gray-600 mb-6">
           Please fill the details to sign up
         </Text>
-        
+
         <Form layout="vertical" onFinish={handleSubmit} className="space-y-4">
           {/* Full Name */}
           <Form.Item
             label="Full Name"
             name="fullname"
-            rules={[
-              { required: true, message: "Please enter your full name" },
-            ]}
+            rules={[{ required: true, message: "Please enter your full name" }]}
           >
             <Input
               size="large"
@@ -98,6 +96,20 @@ const Signup = () => {
               prefix={<LockOutlined className="text-gray-400" />}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="rounded-lg"
+            />
+          </Form.Item>
+          {/* Profile Image Upload */}
+          <Form.Item
+            label="Profile Picture"
+            name="profilePic"
+            valuePropName="file"
+          >
+            <Input
+              type="file"
+              required
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
               className="rounded-lg"
             />
           </Form.Item>
