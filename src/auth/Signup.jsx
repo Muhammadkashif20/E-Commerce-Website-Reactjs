@@ -28,10 +28,9 @@ const Signup = () => {
       .catch((error) => {
         const errorCode = error.code;
         console.log("Error code: ", errorCode);
-        message.error("Error creating account. Please try again!");
         const errorMessage = error.message;
         console.log("Error code: ", errorMessage);
-        message.error("Error creating account. Please try again!");
+        message.error(errorCode);
       });
   };
 
@@ -96,20 +95,6 @@ const Signup = () => {
               prefix={<LockOutlined className="text-gray-400" />}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="rounded-lg"
-            />
-          </Form.Item>
-          {/* Profile Image Upload */}
-          <Form.Item
-            label="Profile Picture"
-            name="profilePic"
-            valuePropName="file"
-          >
-            <Input
-              type="file"
-              required
-              accept="image/*"
-              onChange={(e) => setImageFile(e.target.files[0])}
               className="rounded-lg"
             />
           </Form.Item>

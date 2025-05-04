@@ -22,14 +22,13 @@ const Login = () => {
     message.success("Login successful!");
     const loginData=localStorage.setItem("formData", JSON.stringify(values));
       console.log("loginData=>", loginData);
-
       navigate("/")
-
     })
     .catch((error) => {
       const errorCode = error.code;
       console.log("Error code: ", errorCode);
       const errorMessage = error.message;
+      message.error(errorCode)
       console.log("Error message: ", errorMessage);
     });
   }

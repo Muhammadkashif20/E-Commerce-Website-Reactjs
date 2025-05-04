@@ -1,5 +1,5 @@
   import React from "react";
-  import { Drawer } from "antd";
+  import { Button, Drawer } from "antd";
   import { Menu, Dropdown, Input, Badge, message } from "antd";
   import {
     ShoppingCartOutlined,
@@ -110,7 +110,7 @@
         {/* Icons */}
         <div className="flex items-center gap-6">
           <Badge count={3} size="small">
-            <ShoppingCartOutlined className="text-xl cursor-pointer hover:text-green-600" />
+            <ShoppingCartOutlined className="text-xl cursor-pointer hover:text-blue-600" />
           </Badge>
           <Drawer
             title="User Profile"
@@ -133,11 +133,26 @@
               </button>
             </div>
           </Drawer>
-          <UserOutlined
-            className="text-xl cursor-pointer hover:text-blue-600"
-            onClick={() => setProfileDrawerOpen(true)}
-          />
-          
+          {authData || authDataReg ? (
+  <div className="flex items-center gap-3">
+    <span className="text-sm font-medium text-gray-700">
+      {authDataReg?.fullname || authData?.username}
+    </span>
+    <Button
+      type="primary"
+      onClick={handleUserLogout}
+      className="bg-blue-600 "
+    >
+      Logout
+    </Button>
+  </div>
+) : (
+  <UserOutlined
+    className="text-xl cursor-pointer hover:text-blue-600"
+    onClick={() => setProfileDrawerOpen(true)}
+  />
+)}
+
           {/* Hamburger for mobile */}
           <MenuOutlined
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
