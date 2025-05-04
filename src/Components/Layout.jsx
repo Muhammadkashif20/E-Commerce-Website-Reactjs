@@ -2,10 +2,10 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 
-const LayoutWithNavbar = ({ setFilteredData }) => {
+const LayoutWithNavbar = ({filteredData, setFilteredData }) => {
   return (
     <>
-      <Navbar setFilteredData={setFilteredData} />
+      <Navbar filteredData={filteredData} setFilteredData={setFilteredData} />
       <Outlet />
     </>
   );

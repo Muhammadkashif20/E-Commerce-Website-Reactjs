@@ -1,4 +1,4 @@
-  import React from "react";
+  import React, { useEffect } from "react";
   import { Button, Drawer } from "antd";
   import { Menu, Dropdown, Input, Badge, message } from "antd";
   import {
@@ -11,12 +11,12 @@
   const { Search } = Input;
   import { getAuth, signOut } from "firebase/auth";
   const auth = getAuth();
-  const Navbar = ({ setFilteredData }) => {
+  const Navbar = ({filteredData, setFilteredData }) => {
+    const fetchData = JSON.parse(localStorage.getItem("products"));
     const navigate = useNavigate();
     const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const fetchData = JSON.parse(localStorage.getItem("products"));
     console.log("dataFetchNavbar=>", fetchData);
     const category = fetchData.map((item) => item.category);
     const uniqueCategory = [...new Set(category)];
@@ -41,16 +41,28 @@
         }))}
       />
     );
+    console.log("fetchData=>", fetchData);
     const handleSeacrhFilter = (e) => {
-      const value = e.target.value.toLowerCase();
-      console.log("value=>", value);
+        const value = e.target.value.toLowerCase();
+        setSearchValue(value);
+        console.log("value=>", value);
+        const filteredInput = fetchData.filter((item) =>{
+        return(
+          item.title.toLowerCase().includes(value) || 
+          item.category.toLowerCase().includes(value)
+        )
+      });
+      console.log("data=>", filteredData);
+      console.log("filteredInput=>", filteredInput);
+      setFilteredData(filteredInput);
     };
-    const handleUserLogout = () => {
+      const handleUserLogout = () => {
       signOut(auth)
         .then(() => {
           message.success("Logged out successfully!");
           console.log("User signed out successfully.");
           localStorage.removeItem("formData");
+          localStorage.removeItem("regFormData");
           navigate("/login");
         })
         .catch((error) => {
@@ -62,7 +74,7 @@
       <nav className="w-full bg-white px-6 py-4 flex justify-between items-center z-50 fixed bg-white/85 backdrop-blur-sm shadow-md">
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-600">
-          MK<span className="text-black">-Shopping Store</span>
+          MK<span className="text-black">-Shopping Store </span>
         </div>
 
         {/* Desktop Menu */}
@@ -100,6 +112,7 @@
         {/* Search */}
         <div className="hidden md:block w-64">
           <Search
+          type="text"
             placeholder="Search products..."
             enterButton
             value={searchValue}
@@ -112,6 +125,7 @@
           <Badge count={3} size="small">
             <ShoppingCartOutlined className="text-xl cursor-pointer hover:text-blue-600" />
           </Badge>
+          
           <Drawer
             title="User Profile"
             placement="right"
@@ -133,7 +147,7 @@
               </button>
             </div>
           </Drawer>
-          {authData || authDataReg ? (
+          {authDataReg ? (
   <div className="flex items-center gap-3">
     <span className="text-sm font-medium text-gray-700">
       {authDataReg?.fullname || authData?.username}

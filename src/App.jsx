@@ -16,26 +16,27 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/signUp" element={<Signup />}></Route>
-      <Route element={<LayoutWithNavbar setFilteredData={setFilteredData} />}>
-        <Route
-          element={
-            <>
-              <HeroSection />
-              <Products
-                filteredData={filteredData}
-                setFilteredData={setFilteredData}
-              />
-              <Footer/>
-            </>
-          }
-          path="/" />
-        <Route path="/deals" element={<Deals />}/>
-        <Route path="/contact" element={<Contact />}/>
-        <Route path="/about" element={<About />}/>
-        <Route path="/buynow" element={<BuyNow />}/>
-        <Route path="/detail/:id" element={<DealDetail />}/>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/signUp" element={<Signup />}></Route>
+        <Route element={<LayoutWithNavbar setFilteredData={setFilteredData} />}>
+          <Route
+            element={
+              <>
+                <HeroSection />
+                <Products
+                  filteredData={filteredData}
+                  setFilteredData={setFilteredData}
+                />
+                <Footer />
+              </>
+            }
+            path="/"
+          />
+          <Route path="/deals" element={<Deals />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/buynow" element={<BuyNow />} />
+          <Route path="/detail/:id" element={<DealDetail />} />
         </Route>
       </Routes>
     </BrowserRouter>
