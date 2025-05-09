@@ -4,34 +4,47 @@ import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "./firebase";
 const { Title, Text } = Typography;
 const Signup = () => {
   const navigate = useNavigate();
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (values) => {
-    console.log("fullname: ", fullname);
-    console.log("email: ", email);
-    console.log("password:", password);
+  const handleSubmit = async (values) => {
+    console.log("fullname: ", values.fullname);
+    console.log("email: ", values.email);
+    console.log("password:", values.password);
     console.log("Form Values for register: ", values);
+
     let storeData = localStorage.setItem("regFormData", JSON.stringify(values));
     console.log("storeData=>", storeData);
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up
-        const user = userCredential.user;
-        console.log("User signed up: ", user);
-        message.success("Account created successfully!");
-        navigate("/login");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        console.log("Error code: ", errorCode);
-        const errorMessage = error.message;
-        console.log("Error code: ", errorMessage);
-        message.error(errorCode);
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password,
+      );
+
+      const user = userCredential.user;
+      console.log("User signed up: ", user);
+
+      await setDoc(doc(db, "users", user.uid), {
+        fullname: values.fullname,
+        email: values.email,
+        uid: user.uid,
       });
+
+      message.success("Account created successfully!");
+      navigate("/login");
+      }    
+      catch (error) {
+      console.log("Error code: ", error.code);
+      console.log("Error message: ", error.message);
+      message.error(error.code);
+    }
   };
 
   return (
