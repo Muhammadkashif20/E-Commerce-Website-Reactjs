@@ -18,15 +18,14 @@ const Login = () => {
     console.log("Form Values for login: ", values);
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
+       
         // Signed in
         const user = userCredential.user;
         console.log("User signed in: ", user);
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.data();
         console.log("userData=>", userData);
-        const loginData = localStorage.setItem(
-          "formData",
-          JSON.stringify(userData)
+        const loginData = localStorage.setItem("formData",JSON.stringify(userData)
         );
         message.success("Login successful!");
         console.log("loginData=>", loginData);

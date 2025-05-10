@@ -10,7 +10,6 @@ const Products = ({ filteredData, setFilteredData }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const authData = JSON.parse(localStorage.getItem("formData"));
-  const authDataReg = JSON.parse(localStorage.getItem("regFormData"));
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -29,11 +28,15 @@ const Products = ({ filteredData, setFilteredData }) => {
         setLoading(false);
       }
     };
+
+     localStorage.removeItem("filteredData");
+  setFilteredData(null);
+
     fetchProducts();
   }, []);
 
   const handleAddToCart = () => {
-    if (authData && authDataReg) { 
+    if (authData) { 
       Swal.fire({
         icon: "success",
         title: "Item added to cart!",
@@ -41,11 +44,12 @@ const Products = ({ filteredData, setFilteredData }) => {
       });
     }
     else{
-      message.error("Please login to add items to the cart.");
+      message.error("Please login to add items to the cart!");
     }
   };
   const filterData = JSON.parse(localStorage.getItem("filteredData"));
   console.log("filterData=>", filterData);
+  const displayData = filterData ? filterData : filteredData ? filteredData : products;
   return (
     <div className="min-h-screen bg-gray-50 p-10">
       <Title level={2} className="text-center mb-8">
@@ -70,7 +74,7 @@ const Products = ({ filteredData, setFilteredData }) => {
         </div>
       ) : (
         <Row gutter={[24, 24]} justify="center">
-          {(filterData ? filterData : products).map((product) => (
+          {displayData.map((product) => (
             <Col
               key={product.id}
               xs={24}

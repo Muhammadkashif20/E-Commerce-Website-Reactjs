@@ -50,8 +50,7 @@ const Navbar = ({ filteredData, setFilteredData }) => {
         item.category.toLowerCase().includes(value)
       );
     });
-    console.log("data=>", filteredData);
-    console.log("filteredInput=>", filteredInput);
+    console.log("userSearch=>", filteredInput);
     setFilteredData(filteredInput);
   };
   const handleUserLogout = () => {
@@ -135,7 +134,7 @@ const Navbar = ({ filteredData, setFilteredData }) => {
                 onClick={() => setProfileDrawerOpen(true)}
               />
               <span className="text-sm font-medium text-gray-700">
-                {authData?.fullname || authData?.username}
+                {authData?.fullname}
               </span>
 
               <Button
