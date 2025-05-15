@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Tag, Rate } from "antd";
 const { Title, Paragraph } = Typography;
-const Products = ({ filteredData, setFilteredData }) => {
+const Products = ({ filteredData, setFilteredData,setCount,count }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,9 +34,16 @@ const Products = ({ filteredData, setFilteredData }) => {
 
     fetchProducts();
   }, []);
+  
+  const handleAddToCart = (product) => {
+      setCount(count + 1);
+    localStorage.setItem("cartCount", JSON.stringify(count));
+    const productId=product.id;
+    const saveId=localStorage.setItem("productId",JSON.stringify(productId))
+    console.log("saveId=>",saveId)
+    console.log("productId=>", productId);
 
-  const handleAddToCart = () => {
-    if (authData) { 
+    if (authData) {   
       Swal.fire({
         icon: "success",
         title: "Item added to cart!",

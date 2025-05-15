@@ -11,20 +11,25 @@ import Login from "./auth/Login";
 import LayoutWithNavbar from "./Components/Layout";
 import Signup from "./auth/Signup";
 import BuyNow from "./Components/BuyNow";
+import AddCart from "./Components/AddCart";
+
 const App = () => {
   const [filteredData, setFilteredData] = useState([]);
+    const [count, setCount] = useState(0);
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/signUp" element={<Signup />}></Route>
-        <Route element={<LayoutWithNavbar setFilteredData={setFilteredData} />}>
+        <Route element={<LayoutWithNavbar setFilteredData={setFilteredData} setCount={setCount} count={count}/>}>
           <Route
             element={
               <>
                 <HeroSection />
                 <Products
                   filteredData={filteredData}
+                  setCount={setCount}
+                  count={count}
                   setFilteredData={setFilteredData}
                 />
                 <Footer />
@@ -32,8 +37,9 @@ const App = () => {
             }
             path="/"
           />
-          <Route path="/deals" element={<Deals />} />
+          <Route path="/deals" element={<Deals count={count} setCount={setCount}/>} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/AddCart" element={<AddCart />} />
           <Route path="/about" element={<About />} />
           <Route path="/buynow" element={<BuyNow />} />
           <Route path="/detail/:id" element={<DealDetail />} />

@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 const { Title, Paragraph } = Typography;
 
-const Deals = () => {
+const Deals = ({count , setCount}) => {
   const navigate = useNavigate();
   const deals = JSON.parse(localStorage.getItem("products"))
  const handleAddToCart = () => {
+    setCount(count + 1);
     Swal.fire({
       icon: "success",
       title: "Item added to cart!",

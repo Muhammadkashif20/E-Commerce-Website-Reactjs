@@ -15,6 +15,7 @@ const Contact = () => {
         <Title level={2} className="text-center text-gray-900 mb-6">Contact Us 💬</Title>
         <Paragraph className="text-center text-gray-600 mb-12">
           We’d love to hear from you! Fill out the form below and our team will get back to you shortly.
+          
         </Paragraph>
 
         <Row gutter={[32, 32]} justify="center">

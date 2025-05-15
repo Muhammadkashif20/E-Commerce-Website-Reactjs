@@ -11,16 +11,20 @@ import { Link, useNavigate } from "react-router-dom";
 const { Search } = Input;
 import { getAuth, signOut } from "firebase/auth";
 const auth = getAuth();
-const Navbar = ({ filteredData, setFilteredData }) => {
-  const fetchData = JSON.parse(localStorage.getItem("products"));
+
+const Navbar = ({ setFilteredData, count }) => {
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const fetchData = JSON.parse(localStorage.getItem("products"));
+
   console.log("dataFetchNavbar=>", fetchData);
   const category = fetchData.map((item) => item.category);
   const uniqueCategory = [...new Set(category)];
   console.log("categories=>", category);
+
   const handleCategory = (category) => {
     console.log("Clicked category =>", category);
     const filtered = fetchData.filter((item) => item.category === category);
@@ -28,6 +32,7 @@ const Navbar = ({ filteredData, setFilteredData }) => {
     setFilteredData(filtered);
     localStorage.setItem("filteredData", JSON.stringify(filtered));
   };
+
   const authData = JSON.parse(localStorage.getItem("formData"));
   console.log("authData=>", authData);
 
@@ -120,11 +125,15 @@ const Navbar = ({ filteredData, setFilteredData }) => {
         />
       </div>
 
-      {/* Icons */}
+      {/* Cart Items */}
       <div className="flex items-center gap-6">
-        <Badge count={3} size="small">
-          <ShoppingCartOutlined className="text-xl cursor-pointer hover:text-blue-600" />
+        <Link to={"/AddCart"}>
+        <Badge count={count} size="default">
+          <ShoppingCartOutlined
+            className="text-2xl cursor-pointer hover:text-blue-600"
+            />
         </Badge>
+            </Link>
 
         {authData ? (
           <div>
