@@ -6,7 +6,7 @@ const { Title, Paragraph } = Typography;
 
 const Footer = () => {
   return (
-    <Layout.Footer className="bg-gray-100 text-black py-10">
+    <Layout.Footer className="bg-white text-black py-10">
       <div className="max-w-screen-xl mx-auto px-4">
         <Row gutter={[16, 16]} justify="space-between">
           {/* Quick Links */}

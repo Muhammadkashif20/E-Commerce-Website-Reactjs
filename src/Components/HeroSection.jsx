@@ -6,26 +6,28 @@ const { Title, Paragraph } = Typography;
 
 const HeroSection = () => {
   return (
-    <div className="relative bg-gray-100 py-28 text-gray-800">
-      {/* Optionally, you can add a subtle pattern or light gradient here */}
-      <div className="container mx-auto px-4 text-center">
-        <Title level={1} className="text-4xl md:text-5xl font-semibold mb-4">
-          Discover Top Products & Exclusive Offers
-        </Title>
-        <Paragraph className="text-lg md:text-xl mb-6 text-gray-600">
-          Unlock amazing deals and shop for the best products. Explore now and enjoy exclusive discounts!
-        </Paragraph>
+    <div className="bg-white py-28 text-gray-800">
+      <div className="container mx-auto px-6">
         <Row justify="center">
-          <Col>
-            <Link to="/deals">
-              <Button
-                type="default"
-                size="large"
-                className="border border-gray-300 text-gray-800 hover:border-gray-400 transition duration-300 ease-in-out py-3 px-8 rounded-lg shadow-md"
-              >
-                Exclusive Deals
-              </Button>
-            </Link>
+          <Col xs={24} md={20} lg={16}>
+            <div className="text-center animate-fadeInUp">
+              <Title level={1} className="!text-4xl md:!text-5xl !font-bold !leading-tight mb-4">
+                Your One-Stop Shop for <br />
+                <span className="text-blue-600">Quality & Affordability</span>
+              </Title>
+              <Paragraph className="text-lg md:text-xl text-gray-600 mb-8">
+                Discover premium products, unbeatable prices, and exclusive deals — all in one place. It's time to shop smarter.
+              </Paragraph>
+              <Link to="/deals">
+                <Button
+                  type="primary"
+                  size="large"
+                  className="bg-blue-600 hover:bg-blue-700 transition-all duration-300 px-8 py-2 rounded-lg text-white shadow-lg hover:shadow-xl"
+                >
+                  Browse Exclusive Deals
+                </Button>
+              </Link>
+            </div>
           </Col>
         </Row>
       </div>

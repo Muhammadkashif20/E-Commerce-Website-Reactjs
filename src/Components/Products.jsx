@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Tag, Rate } from "antd";
 const { Title, Paragraph } = Typography;
-const Products = ({ filteredData, setFilteredData,setCount,count }) => {
+const Products = ({ filteredData, setFilteredData, setCount, count }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,10 +17,7 @@ const Products = ({ filteredData, setFilteredData,setCount,count }) => {
         const res = await axios.get("https://dummyjson.com/products");
         console.log("Products fetched successfully", res.data.products);
         setProducts(res.data.products);
-        let data = localStorage.setItem(
-          "products",
-          JSON.stringify(res.data.products)
-        );
+        let data = localStorage.setItem( "products", JSON.stringify(res.data.products));
         console.log("data=>", data);
         setLoading(false);
       } catch (err) {
@@ -29,34 +26,37 @@ const Products = ({ filteredData, setFilteredData,setCount,count }) => {
       }
     };
 
-     localStorage.removeItem("filteredData");
-  setFilteredData(null);
+    localStorage.removeItem("filteredData");
+    setFilteredData(null);
 
     fetchProducts();
   }, []);
-  
+
   const handleAddToCart = (product) => {
-      setCount(count + 1);
+    setCount(count + 1);
     localStorage.setItem("cartCount", JSON.stringify(count));
-    const productId=product.id;
-    const saveId=localStorage.setItem("productId",JSON.stringify(productId))
-    console.log("saveId=>",saveId)
+    const productId = product.id;
+    const saveId = localStorage.setItem("productId", JSON.stringify(productId));
+    console.log("saveId=>", saveId);
     console.log("productId=>", productId);
 
-    if (authData) {   
+    if (authData) {
       Swal.fire({
         icon: "success",
         title: "Item added to cart!",
         text: "Your product has been added to the cart successfully.",
       });
-    }
-    else{
+    } else {
       message.error("Please login to add items to the cart!");
     }
   };
   const filterData = JSON.parse(localStorage.getItem("filteredData"));
   console.log("filterData=>", filterData);
-  const displayData = filterData ? filterData : filteredData ? filteredData : products;
+  const displayData = filterData
+    ? filterData
+    : filteredData
+    ? filteredData
+    : products;
   return (
     <div className="min-h-screen bg-gray-50 p-10">
       <Title level={2} className="text-center mb-8">
@@ -90,58 +90,57 @@ const Products = ({ filteredData, setFilteredData,setCount,count }) => {
               lg={6}
               className="flex justify-center"
             >
-             
+              <Card
+                hoverable
+                className="w-full max-w-xs flex flex-col justify-between shadow-md rounded-xl border border-gray-200"
+                cover={
+                  <img
+                    alt={product.title}
+                    src={product.images[0]}
+                    className="h-56 object-cover rounded-t-xl"
+                  />
+                }
+              >
+                <div>
+                  <Title level={5} ellipsis className="mb-1">
+                    {product.title}
+                  </Title>
+                  <Paragraph ellipsis={{ rows: 2 }} className="text-sm">
+                    {product.description}
+                  </Paragraph>
 
-<Card
-  hoverable
-  className="w-full max-w-xs flex flex-col justify-between shadow-md rounded-xl border border-gray-200"
-  cover={
-    <img
-      alt={product.title}
-      src={product.images[0]}
-      className="h-56 object-cover rounded-t-xl"
-    />
-  }
->
-  <div>
-    <Title level={5} ellipsis className="mb-1">
-      {product.title}
-    </Title>
-    <Paragraph ellipsis={{ rows: 2 }} className="text-sm">
-      {product.description}
-    </Paragraph>
+                  <div className="flex items-center justify-between mt-2">
+                    <Tag color="blue" className="capitalize">
+                      {product.category}
+                    </Tag>
+                    <Rate disabled defaultValue={Math.round(product.rating)} />
+                  </div>
+                </div>
 
-    <div className="flex items-center justify-between mt-2">
-      <Tag color="blue" className="capitalize">{product.category}</Tag>
-      <Rate disabled defaultValue={Math.round(product.rating)} />
-    </div>
-  </div>
+                <div className="mt-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-lg font-semibold text-green-600">
+                      ${product.price}
+                    </span>
+                  </div>
 
-  <div className="mt-4">
-    <div className="flex justify-between items-center mb-2">
-      <span className="text-lg font-semibold text-green-600">
-        ${product.price}
-      </span>
-    </div>
-
-    <div className="flex justify-between gap-2">
-      <Button
-        type="primary"
-        className="w-1/2"
-        onClick={handleAddToCart}
-      >
-        Add to Cart
-      </Button>
-      <Button
-        className="w-1/2"
-        onClick={() => navigate(`/detail/${product.id}`)}
-      >
-        View Details
-      </Button>
-    </div>
-  </div>
-</Card>
-
+                  <div className="flex justify-between gap-2">
+                    <Button
+                      type="primary"
+                      className="w-1/2"
+                      onClick={handleAddToCart}
+                    >
+                      Add to Cart
+                    </Button>
+                    <Button
+                      className="w-1/2"
+                      onClick={() => navigate(`/detail/${product.id}`)}
+                    >
+                      View Details
+                    </Button>
+                  </div>
+                </div>
+              </Card>
             </Col>
           ))}
         </Row>

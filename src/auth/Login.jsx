@@ -25,7 +25,7 @@ const Login = () => {
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.data();
         console.log("userData=>", userData);
-        const loginData = localStorage.setItem("formData",JSON.stringify(userData)
+        const loginData = localStorage.setItem("formData",JSON.stringify(userData) 
         );
         message.success("Login successful!");
         console.log("loginData=>", loginData);

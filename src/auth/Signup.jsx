@@ -17,10 +17,6 @@ const Signup = () => {
     console.log("email: ", values.email);
     console.log("password:", values.password);
     console.log("Form Values for register: ", values);
-
-    let storeData = localStorage.setItem("regFormData", JSON.stringify(values));
-    console.log("storeData=>", storeData);
-
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,

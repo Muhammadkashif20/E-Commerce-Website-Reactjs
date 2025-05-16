@@ -12,26 +12,28 @@ const CartContextProvider=({children})=>{
         else{
             cartItem[existItem].quantity+1
         }
-        const removeItem=(item)=>{
-          const removeItem=cartItem.filter((cartItem)=>cartItem.id !== item.id)
-          setCartItem(removeItem)
+        setCartItem([...cartItem])
+      }
+        function removeItem(item){
+          const itemArr=cartItem
+          const itemRemove=cartItem.filter((cartItem)=>cartItem.id !== item.id)
+          setCartItem([...itemArr])
         }
+        
         const isItemAdded=(item)=>{
-          const isItemAdded=cartItem.find((cartItem)=>cartItem.id == item.id)
-          if(isItemAdded){
+          const ItemAdded=cartItem.find((cartItem)=>cartItem.id == item.id)
+          if(ItemAdded){
             return true
           }
           else{
             return false
           }
         }
-
-    }
-    return(
-        <CartContextProvider.Provider value=>
+      
+        return(
+          <cartContext.Provider value={{cartItem,addToCart,removeItem,isItemAdded}}>
             {children}
-        </CartContextProvider.Provider>
+        </cartContext.Provider>
     )
-    
 }
 export default CartContextProvider

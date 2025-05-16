@@ -11,7 +11,6 @@ import { Link, useNavigate } from "react-router-dom";
 const { Search } = Input;
 import { getAuth, signOut } from "firebase/auth";
 const auth = getAuth();
-
 const Navbar = ({ setFilteredData, count }) => {
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
@@ -35,7 +34,6 @@ const Navbar = ({ setFilteredData, count }) => {
 
   const authData = JSON.parse(localStorage.getItem("formData"));
   console.log("authData=>", authData);
-
   const categories = (
     <Menu
       items={uniqueCategory.map((category, index) => ({
