@@ -3,16 +3,18 @@ import { createContext, useState } from "react";
 export const cartContext=createContext()
 const CartContextProvider=({children})=>{
     const [cartItem,setCartItem]=useState([]);
+    console.log("cartItem=>",cartItem);
+    
     const addToCart=(item)=>{
         // if item is exist 
-        const existItem=cartItem.find((cartItem)=>cartItem.id == item.id)
-        if(existItem){
-            cartItem.push({...item,quantity:existItem.quantity+1}) 
+        const itemIsExist=cartItem.find((cartItem)=>cartItem.id == item.id)
+        if(itemIsExist){
+            cartItem.push({...item,quantity:itemIsExist.quantity+1}) 
         }
         else{
-            cartItem[existItem].quantity+1
+          cartItem.push({...item,quantity:1})
         }
-        setCartItem([...cartItem])
+          setCartItem([...cartItem])
       }
         function removeItem(item){
           const itemArr=cartItem

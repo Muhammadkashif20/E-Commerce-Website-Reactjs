@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Typography, Row, Col, Spin, message } from "antd";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { Tag, Rate } from "antd";
+import { cartContext } from "../context/cartContext";
 const { Title, Paragraph } = Typography;
 const Products = ({ filteredData, setFilteredData, setCount, count }) => {
+  const {addToCart}=useContext(cartContext)
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,13 +35,12 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
   }, []);
 
   const handleAddToCart = (product) => {
-    setCount(count + 1);
-    localStorage.setItem("cartCount", JSON.stringify(count));
-    const productId = product.id;
-    const saveId = localStorage.setItem("productId", JSON.stringify(productId));
-    console.log("saveId=>", saveId);
-    console.log("productId=>", productId);
-
+    // setCount(count + 1);
+    // localStorage.setItem("cartCount", JSON.stringify(count));
+    // const productId = product.id;
+    // const saveId = localStorage.setItem("productId", JSON.stringify(productId));
+    // console.log("saveId=>", saveId);
+    // console.log("productId=>", productId);
     if (authData) {
       Swal.fire({
         icon: "success",
@@ -128,7 +129,7 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
                     <Button
                       type="primary"
                       className="w-1/2"
-                      onClick={handleAddToCart}
+                      onClick={()=>addToCart(product)}
                     >
                       Add to Cart
                     </Button>

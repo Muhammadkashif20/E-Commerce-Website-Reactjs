@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext } from "react";
 import { Button, Drawer } from "antd";
 import { Menu, Dropdown, Input, Badge, message } from "antd";
 import {
@@ -10,8 +10,10 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 const { Search } = Input;
 import { getAuth, signOut } from "firebase/auth";
+import { cartContext } from "../context/cartContext";
 const auth = getAuth();
-const Navbar = ({ setFilteredData, count }) => {
+const Navbar = ({ setFilteredData }) => {
+  const {cartItem}=useContext(cartContext)
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -126,7 +128,7 @@ const Navbar = ({ setFilteredData, count }) => {
       {/* Cart Items */}
       <div className="flex items-center gap-6">
         <Link to={"/AddCart"}>
-        <Badge count={count} size="default">
+        <Badge count={cartItem.length} size="default">
           <ShoppingCartOutlined
             className="text-2xl cursor-pointer hover:text-blue-600"
             />
