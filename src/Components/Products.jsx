@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Card, Button, Typography, Row, Col, Spin, message } from "antd";
-import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Card, Button, Typography, Row, Col, Spin } from "antd";
+import { data, useNavigate } from "react-router-dom";
 import { Tag, Rate } from "antd";
 import { cartContext } from "../context/cartContext";
 const { Title, Paragraph } = Typography;
-const Products = ({ filteredData, setFilteredData, setCount, count }) => {
-  const {addToCart}=useContext(cartContext)
+const Products = ({ filteredData, setFilteredData }) => {
+
+  const { cartItem, addToCart, isItemAdded } = useContext(cartContext);
+  console.log("cartItem=>", cartItem);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const authData = JSON.parse(localStorage.getItem("formData"));
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -19,7 +19,10 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
         const res = await axios.get("https://dummyjson.com/products");
         console.log("Products fetched successfully", res.data.products);
         setProducts(res.data.products);
-        let data = localStorage.setItem( "products", JSON.stringify(res.data.products));
+        let data = localStorage.setItem(
+          "products",
+          JSON.stringify(res.data.products)
+        );
         console.log("data=>", data);
         setLoading(false);
       } catch (err) {
@@ -34,23 +37,6 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = (product) => {
-    // setCount(count + 1);
-    // localStorage.setItem("cartCount", JSON.stringify(count));
-    // const productId = product.id;
-    // const saveId = localStorage.setItem("productId", JSON.stringify(productId));
-    // console.log("saveId=>", saveId);
-    // console.log("productId=>", productId);
-    if (authData) {
-      Swal.fire({
-        icon: "success",
-        title: "Item added to cart!",
-        text: "Your product has been added to the cart successfully.",
-      });
-    } else {
-      message.error("Please login to add items to the cart!");
-    }
-  };
   const filterData = JSON.parse(localStorage.getItem("filteredData"));
   console.log("filterData=>", filterData);
   const displayData = filterData
@@ -82,7 +68,7 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
         </div>
       ) : (
         <Row gutter={[24, 24]} justify="center">
-          {displayData.map((product) => (
+          {displayData?.map((product) => (
             <Col
               key={product.id}
               xs={24}
@@ -129,9 +115,11 @@ const Products = ({ filteredData, setFilteredData, setCount, count }) => {
                     <Button
                       type="primary"
                       className="w-1/2"
-                      onClick={()=>addToCart(product)}
-                    >
-                      Add to Cart
+                      onClick={() => addToCart(product)}>
+                      Add To Cart
+                      {/* {isItemAdded(product.id)
+                        ? `${isItemAdded(data.id).quantity}`
+                        : "Add to Cart"} */}
                     </Button>
                     <Button
                       className="w-1/2"

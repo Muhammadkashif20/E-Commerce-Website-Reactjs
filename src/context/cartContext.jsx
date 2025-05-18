@@ -1,39 +1,54 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { auth } from "../auth/firebase";
+import { message } from "antd";
 
 export const cartContext=createContext()
 const CartContextProvider=({children})=>{
-    const [cartItem,setCartItem]=useState([]);
-    console.log("cartItem=>",cartItem);
-    
-    const addToCart=(item)=>{
-        // if item is exist 
-        const itemIsExist=cartItem.find((cartItem)=>cartItem.id == item.id)
-        if(itemIsExist){
-            cartItem.push({...item,quantity:itemIsExist.quantity+1}) 
-        }
-        else{
-          cartItem.push({...item,quantity:1})
-        }
-          setCartItem([...cartItem])
+  const [cartItem,setCartItem]=useState(()=>{
+      const getItem=localStorage.getItem("cartItem")
+  return getItem ? JSON.parse(getItem) : []
+  });
+  console.log("cartItem=>", cartItem);
+  console.log("cartItemLength=>", cartItem.length);
+  
+    useEffect(()=>{
+    const saveItem=localStorage.setItem("cartItem",JSON.stringify(cartItem))
+    console.log("saveItem=>", saveItem);
+  },[cartItem])
+
+    const authData = JSON.parse(localStorage.getItem("formData"));
+  const addToCart=(item)=>{
+      const arr=cartItem;
+      const itemIndex=cartItem.findIndex((data)=>data.id == item.id)
+      if(itemIndex == -1){
+        setCartItem([...cartItem,{...item,qunatity:1}])
       }
-        function removeItem(item){
-          const itemArr=cartItem
-          const itemRemove=cartItem.filter((cartItem)=>cartItem.id !== item.id)
-          setCartItem([...itemArr])
+      else{
+        arr[itemIndex].quantity++;
+      }
+      if(!authData){
+        message.error("Please login to add items to cart!")
+      }
+      }
+        function removeItemFromCart(id){
+            const arr=cartItem;
+           const itemIndex=cartItem.findIndex((data)=>data.id == id)
+          arr.splice(itemIndex,1)
+          setCartItem({...arr})
         }
         
-        const isItemAdded=(item)=>{
-          const ItemAdded=cartItem.find((cartItem)=>cartItem.id == item.id)
-          if(ItemAdded){
-            return true
+        const isItemAdded=(id)=>{
+          const arr=cartItem;
+          const itemIndex=cartItem.findIndex((data)=>data.id == id)
+          if(itemIndex == -1){
+            return null
           }
           else{
-            return false
+            return arr[itemIndex]
           }
         }
-      
         return(
-          <cartContext.Provider value={{cartItem,addToCart,removeItem,isItemAdded}}>
+          <cartContext.Provider value={{cartItem,addToCart,removeItemFromCart,isItemAdded}}>
             {children}
         </cartContext.Provider>
     )

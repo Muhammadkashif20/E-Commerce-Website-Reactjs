@@ -13,20 +13,22 @@ import { getAuth, signOut } from "firebase/auth";
 import { cartContext } from "../context/cartContext";
 const auth = getAuth();
 const Navbar = ({ setFilteredData }) => {
+    const authData = JSON.parse(localStorage.getItem("formData"));
   const {cartItem}=useContext(cartContext)
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   const fetchData = JSON.parse(localStorage.getItem("products"));
 
   console.log("dataFetchNavbar=>", fetchData);
-  const category = fetchData.map((item) => item.category);
+  const category = fetchData?.map((item) => item.category);
+
   const uniqueCategory = [...new Set(category)];
   console.log("categories=>", category);
 
   const handleCategory = (category) => {
+
     console.log("Clicked category =>", category);
     const filtered = fetchData.filter((item) => item.category === category);
     console.log("filteredData=>", filtered);
@@ -34,8 +36,6 @@ const Navbar = ({ setFilteredData }) => {
     localStorage.setItem("filteredData", JSON.stringify(filtered));
   };
 
-  const authData = JSON.parse(localStorage.getItem("formData"));
-  console.log("authData=>", authData);
   const categories = (
     <Menu
       items={uniqueCategory.map((category, index) => ({
@@ -58,6 +58,10 @@ const Navbar = ({ setFilteredData }) => {
     console.log("userSearch=>", filteredInput);
     setFilteredData(filteredInput);
   };
+  const handleCartItem=()=>{
+    message.error("Please login to add items to cart");
+
+  }
   const handleUserLogout = () => {
     signOut(auth)
       .then(() => {
@@ -124,11 +128,11 @@ const Navbar = ({ setFilteredData }) => {
           onChange={handleSeacrhFilter}
         />
       </div>
-
+    
       {/* Cart Items */}
       <div className="flex items-center gap-6">
         <Link to={"/AddCart"}>
-        <Badge count={cartItem.length} size="default">
+        <Badge count={`${authData ? cartItem.length:0}`} size="default">
           <ShoppingCartOutlined
             className="text-2xl cursor-pointer hover:text-blue-600"
             />
