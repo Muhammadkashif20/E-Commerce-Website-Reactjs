@@ -36,7 +36,6 @@ const Products = ({ filteredData, setFilteredData }) => {
 
     fetchProducts();
   }, []);
-
   const filterData = JSON.parse(localStorage.getItem("filteredData"));
   console.log("filterData=>", filterData);
   const displayData = filterData
@@ -114,13 +113,13 @@ const Products = ({ filteredData, setFilteredData }) => {
                   <div className="flex justify-between gap-2">
                     <Button
                       type="primary"
-                      className="w-1/2"
+                      className={`w-1/2 ${isItemAdded(product.id) ? "bg-blue-700 text-white" : "bg-blue-500 text-white"}`}
                       onClick={() => addToCart(product)}>
-                      Add To Cart
-                      {/* {isItemAdded(product.id)
-                        ? `${isItemAdded(data.id).quantity}`
-                        : "Add to Cart"} */}
+                      {isItemAdded(product.id)
+                        ? "Item is Added"
+                        : "Add to Cart"}
                     </Button>
+                    
                     <Button
                       className="w-1/2"
                       onClick={() => navigate(`/detail/${product.id}`)}

@@ -21,7 +21,7 @@ const CartContextProvider=({children})=>{
       const arr=cartItem;
       const itemIndex=cartItem.findIndex((data)=>data.id == item.id)
       if(itemIndex == -1){
-        setCartItem([...cartItem,{...item,qunatity:1}])
+        setCartItem([...cartItem,{...item,quantity:1}])
       }
       else{
         arr[itemIndex].quantity++;
@@ -29,6 +29,8 @@ const CartContextProvider=({children})=>{
       if(!authData){
         message.error("Please login to add items to cart!")
       }
+      else{
+        message.success("Item added to cart successfully!")}
       }
         function removeItemFromCart(id){
             const arr=cartItem;
