@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Typography, Row, Col, Spin } from "antd";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Tag, Rate } from "antd";
 import { cartContext } from "../context/cartContext";
 const { Title, Paragraph } = Typography;
 const Products = ({ filteredData, setFilteredData }) => {
-
   const { cartItem, addToCart, isItemAdded } = useContext(cartContext);
+  const authData = JSON.parse(localStorage.getItem("formData"));
   console.log("cartItem=>", cartItem);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -113,13 +113,23 @@ const Products = ({ filteredData, setFilteredData }) => {
                   <div className="flex justify-between gap-2">
                     <Button
                       type="primary"
-                      className={`w-1/2 ${isItemAdded(product.id) ? "bg-blue-700 text-white" : "bg-blue-500 text-white"}`}
-                      onClick={() => addToCart(product)}>
-                      {isItemAdded(product.id)
-                        ? "Item is Added"
+                      className={`w-1/2 ${
+                        authData? (
+                          isItemAdded(product.id)
+                          ? "bg-blue-700 text-white"
+                          : "bg-blue-500 text-white"
+                        ) : "bg-blue-500 text-white"
+                          
+                      }`}
+                      onClick={() => addToCart(product)}
+                    >
+                      {authData
+                        ? isItemAdded(product.id)
+                          ? "Item is Added"
+                          : "Add to Cart"
                         : "Add to Cart"}
                     </Button>
-                    
+
                     <Button
                       className="w-1/2"
                       onClick={() => navigate(`/detail/${product.id}`)}
