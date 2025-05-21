@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { cartContext } from "../context/cartContext";
 import { PlusOutlined, MinusOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 const ShoppingCart = () => {
   const { cartItem,removeItemFromCart,addToCart,decreaseItemFromCart} = useContext(cartContext);
@@ -14,40 +15,44 @@ const ShoppingCart = () => {
       <h2 className="text-center mb-6 text-4xl font-bold text-gray-700 ">
         🛒 Shopping Cart 
       </h2>
-
-    {cartItem.length > 0 && (
-  <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mb-12">
-    {/* Quantity Box */}
-    <div className="flex flex-col items-center bg-white border shadow rounded-xl px-6 py-4 w-full sm:w-auto text-center">
+{cartItem.length > 0 && (
+  <div className="bg-white border shadow-xl rounded-2xl p-6 mb-12 w-full sm:max-w-3xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 text-center">
+    {/* Quantity */}
+    <div className="flex-1">
       <p className="text-sm text-gray-500">Total Quantity</p>
-      <p className="text-xl font-bold text-blue-600">{totalQuantity}</p>
+      <p className="text-2xl font-bold text-blue-600">{totalQuantity}</p>
     </div>
 
-    {/* Amount Box */}
-    <div className="flex flex-col items-center bg-white border shadow rounded-xl px-6 py-4 w-full sm:w-auto text-center">
+    {/* Amount */}
+    <div className="flex-1">
       <p className="text-sm text-gray-500">Total Amount</p>
-      <p className="text-xl font-bold text-green-600">${totalAmount.toFixed(2)}</p>
+      <p className="text-2xl font-bold text-green-600">${totalAmount.toFixed(2)}</p>
     </div>
 
-    {/* Checkout Button */}
-    <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium  px-8 py-4 rounded-xl shadow transition w-full sm:w-auto">
-       Checkout
-    </button>
+    {/* Checkout */}
+    <Link to={"/buynow"}>
+    <div className="flex-1">
+      <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg shadow transition w-full">
+        Checkout
+      </button>
+    </div>
+    </Link>
   </div>
 )}
+
 
 
       {cartItem.length === 0 ? (
         <p className="text-center text-lg text-gray-500">Your cart is empty.</p>
       ) : (
-        <div className="space-y-6 mx-auto max-w-5xl">
+        <div className="space-y-3 mx-auto max-w-5xl">
           {cartItem.map((item) => (
             <div
               key={item.id}
               className="flex flex-col md:flex-row justify-between items-center gap-4 p-5 bg-white rounded-2xl shadow-sm border hover:shadow-md transition"
             >
               {/* Image + Info */}
-              <div className="flex items-center gap-5 w-full md:w-1/2">
+              <div c  lassName="flex items-center gap-5 w-full md:w-1/2">
                 <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden border bg-gray-100">
                   <img
                     src={item.thumbnail}

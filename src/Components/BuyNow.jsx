@@ -1,71 +1,128 @@
-import React from "react";
-import { Button, Input, Typography, Divider } from "antd";
+import React, { useState } from "react";
+import { Button, Input, Typography, Divider, message } from "antd";
+import { ShoppingCartOutlined } from "@ant-design/icons";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const BuyNow = () => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    address: "",
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
+  });
+
+  const handleChange = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const handleOrder = () => {
+    const { name, email, address, cardNumber, expiry, cvv } = formData;
+
+    if (!name || !email || !address || !cardNumber || !expiry || !cvv) {
+      message.error("Please fill in all fields.");
+      return;
+    }
+
+    message.success("Order placed successfully!");
+    setFormData({
+      name: "",
+      email: "",
+      address: "",
+      cardNumber: "",
+      expiry: "",
+      cvv: "",
+    });
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen flex items-center justify-center py-16 px-4">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
-        {/* Title */}
-        <Title level={2} className="text-center text-gray-900 mb-8">
-          Buy Now
+      <div className="bg-white shadow-xl rounded-2xl p-8 w-full max-w-2xl">
+        <Title level={2} className="text-center text-gray-800 mb-4">
+          Checkout
         </Title>
 
-        {/* Product Details */}
-        <div className="flex items-center gap-6 mb-8">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Product"
-            className="w-32 h-32 object-cover rounded-lg"
-          />
+        {/* Custom Summary Message */}
+        <div className="bg-blue-50 border border-blue-200 text-blue-800 rounded-lg p-4 mb-6 flex items-center gap-4">
+          <ShoppingCartOutlined style={{ fontSize: "24px" }} />
           <div>
-            <h3 className="text-xl font-bold text-gray-800">Product Name</h3>
-            <p className="text-gray-600 mt-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.</p>
-            <div className="text-lg font-semibold text-green-600 mt-4">$99.99</div>
+            <p className="font-semibold">Secure Checkout</p>
+            <Text type="secondary" className="text-sm">
+              Complete your payment to confirm the order.
+            </Text>
           </div>
         </div>
 
         <Divider />
 
-        {/* Billing Details Form */}
-        <div className="space-y-4">
+        {/* Billing Form */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div>
-            <label className="block text-gray-700">Full Name</label>
-            <Input placeholder="Enter your full name" className="mt-2" />
-          </div>
-          <div>
-            <label className="block text-gray-700">Email Address</label>
-            <Input placeholder="Enter your email address" className="mt-2" />
-          </div>
-          <div>
-            <label className="block text-gray-700">Shipping Address</label>
-            <Input.TextArea
-              placeholder="Enter your shipping address"
-              className="mt-2"
-              rows={4}
+            <label className="text-gray-700 text-sm">Full Name</label>
+            <Input
+              value={formData.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+              placeholder="John Doe"
+              className="mt-1"
             />
           </div>
           <div>
-            <label className="block text-gray-700">Credit Card Number</label>
-            <Input placeholder="Enter your credit card number" className="mt-2" />
+            <label className="text-gray-700 text-sm">Email Address</label>
+            <Input
+              value={formData.email}
+              onChange={(e) => handleChange("email", e.target.value)}
+              placeholder="example@mail.com"
+              className="mt-1"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="text-gray-700 text-sm">Shipping Address</label>
+            <Input.TextArea
+              value={formData.address}
+              onChange={(e) => handleChange("address", e.target.value)}
+              placeholder="123 Main St, City, Country"
+              rows={3}
+              className="mt-1"
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="text-gray-700 text-sm">Credit Card Number</label>
+            <Input
+              value={formData.cardNumber}
+              onChange={(e) => handleChange("cardNumber", e.target.value)}
+              placeholder="1234 5678 9012 3456"
+              maxLength={19}
+              className="mt-1"
+            />
           </div>
           <div>
-            <label className="block text-gray-700">Expiry Date</label>
-            <Input placeholder="MM/YY" className="mt-2" />
+            <label className="text-gray-700 text-sm">Expiry Date</label>
+            <Input
+              value={formData.expiry}
+              onChange={(e) => handleChange("expiry", e.target.value)}
+              placeholder="MM/YY"
+              maxLength={5}
+              className="mt-1"
+            />
           </div>
           <div>
-            <label className="block text-gray-700">CVV</label>
-            <Input placeholder="Enter CVV" className="mt-2" />
+            <label className="text-gray-700 text-sm">CVV</label>
+            <Input
+              value={formData.cvv}
+              onChange={(e) => handleChange("cvv", e.target.value)}
+              placeholder="123"
+              maxLength={4}
+              className="mt-1"
+            />
           </div>
         </div>
 
-        <Divider />
-
-        {/* Submit Button */}
         <Button
           type="primary"
-          className="w-full py-3 mt-6 text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
+          onClick={handleOrder}
+          className="w-full py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg"
         >
           Place Order
         </Button>
