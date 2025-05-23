@@ -30,6 +30,7 @@ const CartContextProvider=({children})=>{
       if(!authData && !authDataGoogle){
           message.error("Please login to add items to cart!")
       } 
+      
       else{
         message.success("Item added to cart successfully!")
       }
