@@ -16,7 +16,6 @@ import ProtectRoutes from "./Components/ProtectRoutes";
 
 const App = () => {
   const [filteredData, setFilteredData] = useState([]);
-  const authData = JSON.parse(localStorage.getItem("formData"));
   const [count, setCount] = useState(0);
   return (
     <BrowserRouter>

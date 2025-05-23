@@ -14,6 +14,8 @@ import { cartContext } from "../context/cartContext";
 const auth = getAuth();
 const Navbar = ({ setFilteredData }) => {
     const authData = JSON.parse(localStorage.getItem("formData"));
+  const authDataGoogle = JSON.parse(localStorage.getItem("googleFormData"));
+  console.log("authDataGoogle=>", authDataGoogle);
   const {cartItem}=useContext(cartContext)
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
@@ -132,14 +134,14 @@ const Navbar = ({ setFilteredData }) => {
       {/* Cart Items */}
       <div className="flex items-center gap-6">
         <Link to={"/AddCart"}>
-        <Badge count={`${authData ? cartItem.length:0}`} size="default">
+        <Badge count={`${authData || authDataGoogle ? cartItem.length:0}`} size="default">
           <ShoppingCartOutlined
             className="text-2xl cursor-pointer hover:text-blue-600"
             />
         </Badge>
             </Link>
 
-        {authData ? (
+        {authData || authDataGoogle ? (
           <div>
             <div className="flex items-center gap-3">
               <UserOutlined
@@ -166,10 +168,10 @@ const Navbar = ({ setFilteredData }) => {
             >
               <div className="flex flex-col gap-4">
                 <p>
-                  <strong>Name:</strong> {authData?.fullname || "Not Provided"}
+                  <strong>Name:</strong> {authData?.fullname || authDataGoogle?.displayName}
                 </p>
                 <p>
-                  <strong>Email:</strong> {authData?.email || "Not Provided"}
+                  <strong>Email:</strong> {authData?.email ||  authDataGoogle?.email}
                 </p>
                 <button
                   onClick={handleUserLogout}

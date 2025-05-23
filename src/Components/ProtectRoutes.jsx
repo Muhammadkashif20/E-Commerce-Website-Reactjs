@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 
 const ProtectRoutes = ({children}) => {
         const authData = JSON.parse(localStorage.getItem("formData"));
-        return authData ? children : <Navigate to={"/"} replace></Navigate>
+  const authDataGoogle = JSON.parse(localStorage.getItem("googleFormData"));
+        return authData || authDataGoogle ? children : <Navigate to={"/"} replace></Navigate>
       }
 export default ProtectRoutes

@@ -1,5 +1,4 @@
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../auth/firebase";
 import { message } from "antd";
 
 export const cartContext=createContext()
@@ -17,6 +16,7 @@ const CartContextProvider=({children})=>{
   },[cartItem])
 
     const authData = JSON.parse(localStorage.getItem("formData"));
+    const authDataGoogle = JSON.parse(localStorage.getItem("googleFormData"));
   const addToCart=(item)=>{
       const arr=[...cartItem];
       const itemIndex=cartItem.findIndex((data)=>data.id == item.id)
@@ -27,7 +27,12 @@ const CartContextProvider=({children})=>{
         arr[itemIndex].quantity++;
         setCartItem(arr)
       }
-      if(!authData) return message.error("Please login to add items to cart!")
+      if(!authData && !authDataGoogle){
+          message.error("Please login to add items to cart!")
+      } 
+      else{
+        message.success("Item added to cart successfully!")
+      }
       }
 
        const decreaseItemFromCart=(id)=>{

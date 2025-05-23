@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { auth } from "./firebase";
 const { Title, Text } = Typography;
+import { GoogleAuthProvider } from "firebase/auth";
 const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -39,10 +40,37 @@ const Login = () => {
         console.log("Error message: ", errorMessage);
       });
   };
+  const handleGoogleLogin = () => {
+    const provider = new GoogleAuthProvider();
+    signInWithPopup(auth, provider)
+      .then(async (result) => {
+        const user = result.user;
+        console.log("User signed in with Result Google: ", result.user);
+        await setDoc(doc(db, "googleUsers", user.uid), {
+                displayName: user.displayName,
+                email: user.email,
+                uid: user.uid,
+              });
+        const userDoc = await getDoc(doc(db, "googleUsers", user.uid));
+          const googleUserData = userDoc.data();
+          console.log("googleUserData=>", googleUserData);
+          const loginData = localStorage.setItem("googleFormData",JSON.stringify(googleUserData));
+          console.log("loginData=>", loginData);
+          message.success("Login successful!");
+          navigate("/");
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        console.log("Error code: ", errorCode);
+        const errorMessage = error.message;
+        message.error(errorCode);
+        console.log("Error message: ", errorMessage);
+      });
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-white p-10 rounded-2xl shadow-2xl transition-all duration-300">
+      <div className="w-full  max-w-md bg-white p-10 rounded-2xl shadow-2xl transition-all duration-300">
         <Title level={2} className="text-center text-blue-600 mb-6">
           Welcome Back 👋
         </Title>
@@ -89,13 +117,6 @@ const Login = () => {
             />
           </Form.Item>
 
-          {/* Forgot Password */}
-          <div className="text-right mb-4">
-            <a href="#" className="text-sm text-blue-500 hover:underline">
-              Forgot password?
-            </a>
-          </div>
-
           {/* Login Button */}
           <Form.Item>
             <Button
@@ -108,7 +129,28 @@ const Login = () => {
               Login
             </Button>
           </Form.Item>
+              {/* OR Divider */}
+<div className="flex items-center my-4">
+  <div className="flex-grow h-px bg-gray-300" />
+  <span className="mx-2 text-sm text-gray-400">OR</span>
+  <div className="flex-grow h-px bg-gray-300" />
+</div>
 
+{/* Google Button */}
+<Button
+  onClick={handleGoogleLogin}
+  type="default"
+  size="large"
+  block
+  className="flex items-center justify-center gap-2 rounded-lg border-gray-300"
+>
+  <img
+    src="https://www.svgrepo.com/show/475656/google-color.svg"
+    alt="Google"
+    className="w-5 h-5"
+  />
+  <span>Continue with Google</span>
+</Button>
           {/* Signup Link */}
           <div className="text-center text-sm text-gray-600">
             Don’t have an account?{" "}
@@ -118,6 +160,7 @@ const Login = () => {
           </div>
         </Form>
       </div>
+
     </div>
   );
 };

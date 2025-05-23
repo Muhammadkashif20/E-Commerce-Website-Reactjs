@@ -8,6 +8,7 @@ const { Title, Paragraph } = Typography;
 const Products = ({ filteredData, setFilteredData }) => {
   const { cartItem, addToCart, isItemAdded } = useContext(cartContext);
   const authData = JSON.parse(localStorage.getItem("formData"));
+  const authDataGoogle = JSON.parse(localStorage.getItem("googleFormData"));
   console.log("cartItem=>", cartItem);
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -123,7 +124,7 @@ const Products = ({ filteredData, setFilteredData }) => {
                       }`}
                       onClick={() => addToCart(product)}
                     >
-                      {authData
+                      {authData || authDataGoogle
                         ? isItemAdded(product.id)
                           ? "Item is Added"
                           : "Add to Cart"
