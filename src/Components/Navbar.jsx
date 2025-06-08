@@ -13,10 +13,10 @@ import { getAuth, signOut } from "firebase/auth";
 import { cartContext } from "../context/cartContext";
 const auth = getAuth();
 const Navbar = ({ setFilteredData }) => {
-    const authData = JSON.parse(localStorage.getItem("formData"));
+  const authData = JSON.parse(localStorage.getItem("formData"));
   const authDataGoogle = JSON.parse(localStorage.getItem("googleFormData"));
   console.log("authDataGoogle=>", authDataGoogle);
-  const {cartItem}=useContext(cartContext)
+  const { cartItem } = useContext(cartContext);
   const navigate = useNavigate();
   const [profileDrawerOpen, setProfileDrawerOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -30,7 +30,6 @@ const Navbar = ({ setFilteredData }) => {
   console.log("categories=>", category);
 
   const handleCategory = (category) => {
-
     console.log("Clicked category =>", category);
     const filtered = fetchData.filter((item) => item.category === category);
     console.log("filteredData=>", filtered);
@@ -60,10 +59,9 @@ const Navbar = ({ setFilteredData }) => {
     console.log("userSearch=>", filteredInput);
     setFilteredData(filteredInput);
   };
-  const handleCartItem=()=>{
+  const handleCartItem = () => {
     message.error("Please login to add items to cart");
-
-  }
+  };
   const handleUserLogout = () => {
     signOut(auth)
       .then(() => {
@@ -82,6 +80,7 @@ const Navbar = ({ setFilteredData }) => {
     setProfileDrawerOpen(true);
     navigate("/login");
   };
+  console.log("googleImage=>", authDataGoogle?.photoURL);
   return (
     <nav className="w-full bg-white px-6 py-4 flex justify-between items-center z-50 fixed bg-white/85 backdrop-blur-sm shadow-md">
       {/* Logo */}
@@ -131,24 +130,35 @@ const Navbar = ({ setFilteredData }) => {
           onChange={handleSeacrhFilter}
         />
       </div>
-    
+
       {/* Cart Items */}
       <div className="flex items-center gap-6">
         <Link to={"/AddCart"}>
-        <Badge count={`${authData || authDataGoogle ? cartItem.length:0}`} size="default">
-          <ShoppingCartOutlined
-            className="text-2xl cursor-pointer hover:text-blue-600"
-            />
-        </Badge>
-            </Link>
+          <Badge
+            count={`${authData || authDataGoogle ? cartItem.length : 0}`}
+            size="default"
+          >
+            <ShoppingCartOutlined className="text-2xl cursor-pointer hover:text-blue-600" />
+          </Badge>
+        </Link>
 
         {authData || authDataGoogle ? (
           <div>
             <div className="flex items-center gap-3">
-              <UserOutlined
-                className="text-xl cursor-pointer hover:text-blue-600"
-                onClick={() => setProfileDrawerOpen(true)}
-              />
+              {authDataGoogle?.photoURL ? (
+                <img
+                  src={authDataGoogle?.photoURL}
+                  alt="Profile"
+                  className="w-9 h-9 rounded-full cursor-pointer"
+                  onClick={() => setProfileDrawerOpen(true)}
+                />
+              ) : (
+                <UserOutlined
+                  className="text-xl cursor-pointer hover:text-blue-600"
+                  onClick={() => setProfileDrawerOpen(true)}
+                />
+              )}
+
               <span className="text-sm font-medium text-gray-700">
                 {authData?.fullname}
               </span>
@@ -167,13 +177,32 @@ const Navbar = ({ setFilteredData }) => {
               onClose={() => setProfileDrawerOpen(false)}
               open={profileDrawerOpen}
             >
-              <div className="flex flex-col gap-4">
-                <p>
-                  <strong>Name:</strong> {authData?.fullname || authDataGoogle?.displayName}
-                </p>
-                <p>
-                  <strong>Email:</strong> {authData?.email ||  authDataGoogle?.email}
-                </p>
+              <div className="flex flex-col items-center gap-4">
+                {authData?.photoURL || authDataGoogle?.photoURL ? (
+                  <img
+                    src={authData?.photoURL || authDataGoogle?.photoURL}
+                    alt="Profile"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-xl text-black">
+                    <UserOutlined
+                      className="text-xl cursor-pointer hover:text-blue-600"
+                    />
+                  </div>
+                )}
+
+                <div className="text-center space-y-1 text-base text-gray-800">
+                  <p>
+                    <strong>Name:</strong>{" "}
+                    {authData?.fullname || authDataGoogle?.displayName}
+                  </p>
+                  <p>
+                    <strong>Email:</strong>{" "}
+                    {authData?.email || authDataGoogle?.email}
+                  </p>
+                </div>
+
                 <button
                   onClick={handleUserLogout}
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"

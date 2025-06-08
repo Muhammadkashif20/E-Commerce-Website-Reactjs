@@ -19,14 +19,15 @@ const Login = () => {
     console.log("Form Values for login: ", values);
     signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential) => {
-       
         // Signed in
         const user = userCredential.user;
         console.log("User signed in: ", user);
         const userDoc = await getDoc(doc(db, "users", user.uid));
         const userData = userDoc.data();
         console.log("userData=>", userData);
-        const loginData = localStorage.setItem("formData",JSON.stringify(userData) 
+        const loginData = localStorage.setItem(
+          "formData",
+          JSON.stringify(userData)
         );
         message.success("Login successful!");
         console.log("loginData=>", loginData);
@@ -47,17 +48,21 @@ const Login = () => {
         const user = result.user;
         console.log("User signed in with Result Google: ", result.user);
         await setDoc(doc(db, "googleUsers", user.uid), {
-                displayName: user.displayName,
-                email: user.email,
-                uid: user.uid,
-              });
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL,
+        });
         const userDoc = await getDoc(doc(db, "googleUsers", user.uid));
-          const googleUserData = userDoc.data();
-          console.log("googleUserData=>", googleUserData);
-          const loginData = localStorage.setItem("googleFormData",JSON.stringify(googleUserData));
-          console.log("loginData=>", loginData);
-          message.success("Login successful!");
-          navigate("/");
+        const googleUserData = userDoc.data();
+        console.log("googleUserData=>", googleUserData);
+        const loginData = localStorage.setItem(
+          "googleFormData",
+          JSON.stringify(googleUserData)
+        );
+        console.log("loginData=>", loginData);
+        message.success("Login successful!");
+        navigate("/");
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -66,7 +71,7 @@ const Login = () => {
         message.error(errorCode);
         console.log("Error message: ", errorMessage);
       });
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -129,28 +134,28 @@ const Login = () => {
               Login
             </Button>
           </Form.Item>
-              {/* OR Divider */}
-<div className="flex items-center my-4">
-  <div className="flex-grow h-px bg-gray-300" />
-  <span className="mx-2 text-sm text-gray-400">OR</span>
-  <div className="flex-grow h-px bg-gray-300" />
-</div>
+          {/* OR Divider */}
+          <div className="flex items-center my-4">
+            <div className="flex-grow h-px bg-gray-300" />
+            <span className="mx-2 text-sm text-gray-400">OR</span>
+            <div className="flex-grow h-px bg-gray-300" />
+          </div>
 
-{/* Google Button */}
-<Button
-  onClick={handleGoogleLogin}
-  type="default"
-  size="large"
-  block
-  className="flex items-center justify-center gap-2 rounded-lg border-gray-300"
->
-  <img
-    src="https://www.svgrepo.com/show/475656/google-color.svg"
-    alt="Google"
-    className="w-5 h-5"
-  />
-  <span>Continue with Google</span>
-</Button>
+          {/* Google Button */}
+          <Button
+            onClick={handleGoogleLogin}
+            type="default"
+            size="large"
+            block
+            className="flex items-center justify-center gap-2 rounded-lg border-gray-300"
+          >
+            <img
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            <span>Continue with Google</span>
+          </Button>
           {/* Signup Link */}
           <div className="text-center text-sm text-gray-600">
             Don’t have an account?{" "}
@@ -160,7 +165,6 @@ const Login = () => {
           </div>
         </Form>
       </div>
-
     </div>
   );
 };
