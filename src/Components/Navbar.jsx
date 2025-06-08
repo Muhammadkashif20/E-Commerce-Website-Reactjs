@@ -71,7 +71,8 @@ const Navbar = ({ setFilteredData }) => {
         console.log("User signed out successfully.");
         localStorage.removeItem("formData");
         localStorage.removeItem("regFormData");
-        navigate("/login");
+        localStorage.removeItem("googleFormData");
+        navigate("/");
       })
       .catch((error) => {
         console.log("Error signing out: ", error);
